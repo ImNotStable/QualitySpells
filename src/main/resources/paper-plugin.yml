@@ -1,0 +1,5 @@
+name: QualitySpells
+version: '@version@'
+main: com.imnotstable.qualityspells.QualitySpells
+api-version: '1.20'
+load: STARTUP

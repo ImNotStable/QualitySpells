@@ -1,0 +1,47 @@
+import org.apache.tools.ant.filters.ReplaceTokens
+
+plugins {
+    id 'java'
+    id 'com.github.johnrengelman.shadow' version '8.1.1'
+}
+
+compileJava {
+    sourceCompatibility = '17'
+    targetCompatibility = '17'
+    options.encoding = 'UTF-8'
+    jar.enabled = false
+}
+
+group = 'com.imnotstable'
+version = '1.0.0'
+
+repositories {
+    mavenCentral()
+    maven {url 'https://repo.papermc.io/repository/maven-public/'}
+    maven {url 'https://oss.sonatype.org/content/groups/public/'}
+}
+
+dependencies {
+    compileOnly "io.papermc.paper:paper-api:1.20.4-R0.1-SNAPSHOT"
+    implementation 'dev.jorel:commandapi-bukkit-shade:9.3.0'
+
+
+    compileOnly 'org.projectlombok:lombok:1.18.32'
+    annotationProcessor 'org.projectlombok:lombok:1.18.32'
+}
+
+processResources {
+    filter(ReplaceTokens, tokens: [version: version])
+}
+
+build {
+    dependsOn(shadowJar)
+}
+
+shadowJar {
+    archiveFileName = project.name + "-" + project.version + ".jar"
+    destinationDirectory = file("M:/Test Server/plugins")
+    relocate 'dev.jorel.commandapi', 'com.imnotstable.qualityspells.commandapi'
+    relocate 'fr.mrmicky.fastinv', 'com.imnotstable.qualityspells.fastinv'
+    exclude 'META-INF/**', 'LICENSE', 'module-info.class'
+}
